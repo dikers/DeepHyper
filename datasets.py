@@ -353,8 +353,7 @@ class HyperX(torch.utils.data.Dataset):
             supervision: 'full' or 'semi' supervised algorithms
         """
         super(HyperX, self).__init__()
-        print(" HyperX data shape  ", data.shape)
-        print(" HyperX gt shape  ", gt.shape)
+        
         self.data = data
         self.label = gt
         self.name = hyperparams["dataset"]

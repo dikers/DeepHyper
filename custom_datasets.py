@@ -27,5 +27,6 @@ def leaf_loader(folder):
         ]
 
     ignored_labels = [0]
+#     ignored_labels = []
     palette = None
     return img, gt, rgb_bands, ignored_labels, label_values, palette

@@ -293,6 +293,8 @@ if DATAVIZ:
     plot_spectrums(mean_spectrums, viz, title="Mean spectrum/class")
 
 results = []
+
+
 # run the experiment several times
 for run in range(N_RUNS):
     if TRAIN_GT is not None and TEST_GT is not None:

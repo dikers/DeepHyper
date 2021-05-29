@@ -5,14 +5,12 @@ import spectral.io.envi as envi
 
 
 DATASET_NAME = 'leaf'
-HEIGHT = 256
-WIDTH = 256
-BAND = 102
 NEW_DATA_PATH = os.path.join(os.getcwd(), "Datasets/"+DATASET_NAME)  # 存放数据路径 patch是文件夹名称
-new_shape=(HEIGHT * 2,WIDTH * 2, BAND)
-new_data = np.zeros(new_shape, dtype = float)
 
 
+"""
+temp_split: 对数据进行拆分
+"""
 def loadData(flieName, dataIndex, temp_split=4):
     
     print("------------  loadData  ", dataIndex)
@@ -25,7 +23,7 @@ def loadData(flieName, dataIndex, temp_split=4):
 
     HEIGHT = data.shape[0] //temp_split
     WIDTH = data.shape[1] //temp_split
-    BAND = data.shape[2] // 2
+    BAND = data.shape[2]
 #     BAND = BAND_SIZE
     new_shape=(BAND,HEIGHT,WIDTH)
     new_data = np.zeros(new_shape, dtype = float)
@@ -38,7 +36,7 @@ def loadData(flieName, dataIndex, temp_split=4):
             x = h*temp_split
             y = w*temp_split
             for b in range(BAND):
-                new_data[b][h][w] = data[x,y][b*2]
+                new_data[b][h][w] = data[x,y][b]
 
             if(sum(mask_data[x, y])  > 0.01 ):
                 label[h][w] = dataIndex 
@@ -53,6 +51,10 @@ def loadData(flieName, dataIndex, temp_split=4):
     print("label shape : ", label.shape)
     return new_data, label
 
+if not os.path.exists(NEW_DATA_PATH):
+    print("  ", NEW_DATA_PATH)
+    os.makedirs(NEW_DATA_PATH)
+    print("create dataset dir success.")
 
 data1, label1 = loadData("dataset", 1)
 data2, label2 = loadData("dataset", 2)
@@ -73,8 +75,7 @@ gt = np.vstack((gt1, gt2))
 
 
 
-if not os.path.exists(NEW_DATA_PATH):
-    os.mkdir(NEW_DATA_PATH)
+
     
     
 train_dict, test_dict = {}, {}
