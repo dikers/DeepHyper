@@ -227,14 +227,20 @@ TRAIN_GT = args.train_set
 TEST_GT = args.test_set
 TEST_STRIDE = args.test_stride
 
+# visiom train flag
+VISIOM_FLAG = False
+
 if args.download is not None and len(args.download) > 0:
     for dataset in args.download:
         get_dataset(dataset, target_folder=FOLDER)
     quit()
 
-viz = visdom.Visdom(env=DATASET + " " + MODEL)
-if not viz.check_connection:
-    print("Visdom is not connected. Did you run 'python -m visdom.server' ?")
+if VISIOM_FLAG:
+    viz = visdom.Visdom(env=DATASET + " " + MODEL)
+    if not viz.check_connection:
+        print("Visdom is not connected. Did you run 'python -m visdom.server' ?")
+else:
+    viz = None
 
 
 hyperparams = vars(args)
@@ -282,7 +288,10 @@ hyperparams = dict((k, v) for k, v in hyperparams.items() if v is not None)
 
 # Show the image and the ground truth
 
-display_dataset(img, gt, RGB_BANDS, LABEL_VALUES, palette, viz)
+if VISIOM_FLAG:
+    display_dataset(img, gt, RGB_BANDS, LABEL_VALUES, palette, viz)
+
+
 color_gt = convert_to_color(gt)
 
 if DATAVIZ:
@@ -320,9 +329,9 @@ for run in range(N_RUNS):
         "run {}/{}".format(run + 1, N_RUNS),
     )
 
-    
-    display_predictions(convert_to_color(train_gt), viz, caption="Train ground truth")
-    display_predictions(convert_to_color(test_gt), viz, caption="Test ground truth")
+    if VISIOM_FLAG:
+        display_predictions(convert_to_color(train_gt), viz, caption="Train ground truth")
+        display_predictions(convert_to_color(test_gt), viz, caption="Test ground truth")
 
     if MODEL == "SVM_grid":
         print("Running a grid search SVM")
@@ -444,12 +453,13 @@ for run in range(N_RUNS):
     prediction[mask] = 0
 
     color_prediction = convert_to_color(prediction)
-    display_predictions(
-        color_prediction,
-        viz,
-        gt=convert_to_color(test_gt),
-        caption="Prediction vs. test ground truth",
-    )
+    if VISIOM_FLAG:
+        display_predictions(
+            color_prediction,
+            viz,
+            gt=convert_to_color(test_gt),
+            caption="Prediction vs. test ground truth",
+        )
 
     results.append(run_results)
     show_results(run_results, viz, label_values=LABEL_VALUES)

@@ -1,6 +1,6 @@
 
-python3 main.py --model he --dataset leaf  --cuda=0 --training_sample=0.7 --patch_size=17 --epoch=10 --batch_size=128
-#python3 inference.py --model he --checkpoint checkpoints/he_et_al/leaf/2021_05_29_11_34_10_epoch5_0.77.pth --image 'Datasets/leaf/leaf.mat'  --mat leaf --n_classes=5 --patch_size=17 --cuda=0
+python3 main.py --model he --dataset leaf  --cuda=0 --training_sample=0.7 --patch_size=17 --epoch=20 --batch_size=128
+#python3 inference.py --model he --checkpoint checkpoints/he_et_al/leaf/2021_05_31_09_58_59_epoch19_1.00.pth --image 'Datasets/leaf/leaf.mat'  --mat leaf --n_classes=5 --patch_size=17 --cuda=0
 
 
 

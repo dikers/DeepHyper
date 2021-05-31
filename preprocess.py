@@ -11,7 +11,7 @@ NEW_DATA_PATH = os.path.join(os.getcwd(), "Datasets/"+DATASET_NAME)  # 存放数
 """
 temp_split: 对数据进行拆分
 """
-def loadData(flieName, dataIndex, temp_split=4):
+def loadData(flieName, dataIndex, temp_split=2):
     
     print("------------  loadData  ", dataIndex)
     # 原始数据路径
